@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import com.revrobotics.CANSparkMax;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.SerialPort;
 //import com.revrobotics.SparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.XboxController;
@@ -28,9 +29,12 @@ public class Robot extends TimedRobot {
 	//MotorControllerGroup m_rearRight = new MotorController(4);
 	MotorControllerGroup m_right = new MotorControllerGroup(frontRight , backRight);
  
-	ahrs = new AHRS(SerialPort.Port.kMXP); 
+	AHRS ahrs = new AHRS(SerialPort.Port.kMXP); 
 	
-
+	double accelX;
+	double accelY;
+	double accelZ;
+	double angle;
 	//xbox controller
 	XboxController driveController = new XboxController(0);
 
@@ -51,13 +55,19 @@ public class Robot extends TimedRobot {
 	public void teleopInit() {
 		frontRight.setInverted(true);
 		backRight.setInverted(true);
+		
 	}
 
 	@Override
 	public void teleopPeriodic() {
 		//use controller input to set drive system
 		
-	 	
+	 	accelX = ahrs.getWorldLinearAccelX();
+		accelY = ahrs.getWorldLinearAccelY();
+		accelZ = ahrs.getWorldLinearAccelZ();
+		angle = ahrs.getAngle();
+		SmartDashboard.putNumber(   "accelX", accelX);
+		SmartDashboard.putNumber(   "angle", angle);
 		
 		Double LeftSpeed = driveController.getLeftY();
 		Double RightSpeed = driveController.getRightY();
