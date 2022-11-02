@@ -1,14 +1,18 @@
 package org.team5148.training;
 
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.TimedRobot;
 import com.revrobotics.CANSparkMax;
+import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //import com.revrobotics.SparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.XboxController;
 //import edu.wpi.first.wpilibj.motorcontrol.Spark;
 
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
-
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 
 public class Robot extends TimedRobot {
 
@@ -16,13 +20,22 @@ public class Robot extends TimedRobot {
 	CANSparkMax frontRight = new CANSparkMax(3, MotorType.kBrushless);
 	CANSparkMax backLeft = new CANSparkMax(2, MotorType.kBrushless);
 	CANSparkMax backRight = new CANSparkMax(4, MotorType.kBrushless);
-
+	//CANSparkMax m_frontLeft = new CANSparkMax(1);
+	//CANSparkMax m_rearLeft = new CANSparkMax(3);
+	MotorControllerGroup m_left = new MotorControllerGroup(frontLeft , backLeft);
+ 
+	//MotorControllerGroup m_frontRight = new MotorControllerGroup(2);
+	//MotorControllerGroup m_rearRight = new MotorController(4);
+	MotorControllerGroup m_right = new MotorControllerGroup(frontRight , backRight);
+ 
+	ahrs = new AHRS(SerialPort.Port.kMXP); 
 	
+
 	//xbox controller
 	XboxController driveController = new XboxController(0);
 
 	//define a drive
-	MecanumDrive MDrive = new MecanumDrive(frontLeft, backLeft, frontRight, backRight);
+	DifferentialDrive DDrive = new DifferentialDrive(m_left , m_right);
 
 	@Override
 	public void autonomousInit() {
@@ -44,11 +57,15 @@ public class Robot extends TimedRobot {
 	public void teleopPeriodic() {
 		//use controller input to set drive system
 		
-
-		Double ySpeed = driveController.getLeftY();
-		Double xSpeed = driveController.getLeftX();
-		Double zRotation = driveController.getRightX(); 
-		MDrive.driveCartesian(ySpeed, xSpeed, zRotation);
+	 	
+		
+		Double LeftSpeed = driveController.getLeftY();
+		Double RightSpeed = driveController.getRightY();
+		//Double Rotation = driveController.getRightY(); 
+		DDrive.tankDrive(LeftSpeed , RightSpeed);
+		//m_left.set(LeftSpeed);
 		
 	}
 }
+
+
