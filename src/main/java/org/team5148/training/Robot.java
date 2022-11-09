@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.XboxController;
 //import edu.wpi.first.wpilibj.motorcontrol.Spark;
 
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 
 public class Robot extends TimedRobot {
@@ -23,7 +22,7 @@ public class Robot extends TimedRobot {
 	CANSparkMax backRight = new CANSparkMax(4, MotorType.kBrushless);
 	//CANSparkMax m_frontLeft = new CANSparkMax(1);
 	//CANSparkMax m_rearLeft = new CANSparkMax(3);
-	MotorControllerGroup m_left = new MotorControllerGroup(frontLeft , backLeft);
+	MotorControllerGroup m_left = new MotorControllerGroup(frontLeft , frontRight , backRight , backLeft);
  
 	//MotorControllerGroup m_frontRight = new MotorControllerGroup(2);
 	//MotorControllerGroup m_rearRight = new MotorController(4);
@@ -39,7 +38,7 @@ public class Robot extends TimedRobot {
 	XboxController driveController = new XboxController(0);
 
 	//define a drive
-	DifferentialDrive DDrive = new DifferentialDrive(m_left , m_right);
+	MecanumDrive MDrive = new MecanumDrive(frontLeft , backLeft , frontRight , backRight);
 
 	@Override
 	public void autonomousInit() {
@@ -66,13 +65,13 @@ public class Robot extends TimedRobot {
 		accelY = ahrs.getWorldLinearAccelY();
 		accelZ = ahrs.getWorldLinearAccelZ();
 		angle = ahrs.getAngle();
-		SmartDashboard.putNumber(   "accelX", accelX);
-		SmartDashboard.putNumber(   "angle", angle);
+		SmartDashboard.putNumber("accelX", accelX);
+		SmartDashboard.putNumber("angle", angle);
 		
-		Double LeftSpeed = driveController.getLeftY();
-		Double RightSpeed = driveController.getRightY();
+		Double ySpeed = driveController.getLeftY();
+		Double xSpeed = driveController.getRightY();
 		//Double Rotation = driveController.getRightY(); 
-		DDrive.tankDrive(LeftSpeed , RightSpeed);
+		MDrive.driveCartesian(ySpeed, xSpeed, zRotation);
 		//m_left.set(LeftSpeed);
 		
 	}
