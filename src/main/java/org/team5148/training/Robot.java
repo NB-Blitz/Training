@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.SerialPort;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.XboxController;
 //import edu.wpi.first.wpilibj.motorcontrol.Spark;
+//import java.lang.math;
 
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
@@ -69,10 +70,18 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("angle", angle);
 		
 		Double ySpeed = driveController.getLeftY();
-		Double xSpeed = driveController.getRightY();
-		//Double Rotation = driveController.getRightY(); 
-		MDrive.driveCartesian(ySpeed, xSpeed, zRotation);
+		Double xSpeed = driveController.getLeftX();
+
+		double M_magnitude = Math.sqrt((xSpeed*xSpeed)+(ySpeed*ySpeed));// hypotenuse 
+		double M_angle = Math.tan(ySpeed/xSpeed);// 
+
+		//verifing range output of tan function, needs to be -180 to 180
+
+
+		Double zRotation = driveController.getRightY();
+		//MDrive.driveCartesian(ySpeed, xSpeed, zRotation);
 		//m_left.set(LeftSpeed);
+		MDrive.drivePolar(M_magnitude, M_angle, zRotation);
 		
 	}
 }
