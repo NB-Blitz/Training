@@ -6,7 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.Timer; 
 
 import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -23,7 +23,9 @@ public class Robot extends TimedRobot {
   private final TalonSRX backLeft = new TalonSRX(3);
   private final TalonSRX backRight = new TalonSRX(4);
   private final Joystick leftJoystick = new Joystick(0);
+  private final Joystick rightJoystick = new Joystick(1);
   private final Timer m_timer = new Timer();
+
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -42,7 +44,7 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     m_timer.restart();
   }
-
+                    
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
@@ -63,9 +65,9 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     frontLeft.set(TalonSRXControlMode.PercentOutput, -leftJoystick.getY() * 0.2);
-    frontRight.set(TalonSRXControlMode.PercentOutput, leftJoystick.getRawAxis(3) * 0.2);
+    frontRight.set(TalonSRXControlMode.PercentOutput, rightJoystick.getY()* 0.2);
     backLeft.set(TalonSRXControlMode.PercentOutput, -leftJoystick.getY() * 0.2);
-    backRight.set(TalonSRXControlMode.PercentOutput, leftJoystick.getRawAxis(3) * 0.2);
+    backRight.set(TalonSRXControlMode.PercentOutput, rightJoystick.getY() * 0.2);
   }
 
   /** This function is called once each time the robot enters test mode. */
