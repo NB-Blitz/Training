@@ -23,6 +23,7 @@ public class Robot extends TimedRobot {
   private final TalonSRX backLeft = new TalonSRX(3);
   private final TalonSRX backRight = new TalonSRX(4);
   private final Joystick leftJoystick = new Joystick(0);
+  private final Joystick rightJoystick = new Joystick(1);
   private final Timer m_timer = new Timer();
 
   /**
@@ -63,9 +64,9 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     frontLeft.set(TalonSRXControlMode.PercentOutput, -leftJoystick.getY() * 0.2);
-    frontRight.set(TalonSRXControlMode.PercentOutput, leftJoystick.getRawAxis(3) * 0.2);
+    frontRight.set(TalonSRXControlMode.PercentOutput, rightJoystick.getY() * 0.2);
     backLeft.set(TalonSRXControlMode.PercentOutput, -leftJoystick.getY() * 0.2);
-    backRight.set(TalonSRXControlMode.PercentOutput, leftJoystick.getRawAxis(3) * 0.2);
+    backRight.set(TalonSRXControlMode.PercentOutput, rightJoystick.getY() * 0.2);
   }
 
   /** This function is called once each time the robot enters test mode. */
@@ -73,6 +74,7 @@ public class Robot extends TimedRobot {
   public void testInit() {}
 
   /** This function is called periodically during test mode. */
+
   @Override
   public void testPeriodic() {}
 }
